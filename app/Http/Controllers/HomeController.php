@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\Category;
 use App\Models\User;
 use App\Services\HomeService;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
-
+session_start();
 class HomeController extends Controller
 {
     protected $service;
@@ -76,6 +79,22 @@ class HomeController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-       
+        event(new Registered($user));
+        Auth::login($user);
+       return Redirect::to('home');
     }
+    public function create(LoginRequest $request){
+        $request->authenticate();
+        $request->session()->regenerate();
+        return redirect()->intended('home');
+    }
+    public function logout(Request $request)
+	{
+		Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+        return redirect()->intended('home');
+	}
 }

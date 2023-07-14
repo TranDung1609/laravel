@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Category;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
@@ -102,6 +103,8 @@ class PostController extends Controller
         //home page new
         $new = $this->service->newPost();
         $news = $this->service->newsPost();
+        //comment
+        $comments = Comment::where('post_id', $id)->get();
         return view(
             'user.post_detail',
             ['categories' => $categories],
@@ -113,6 +116,7 @@ class PostController extends Controller
                 'new' => $new,
                 'news' => $news,
                 'postCategory' => $postCategory,
+                'comments' => $comments,
             ]
         );
     }

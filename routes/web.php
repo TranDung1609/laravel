@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CkeditorController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
@@ -23,9 +24,14 @@ use App\Http\Controllers\UserController;
 //     return view('user.index');
 // });
 
-Route::prefix('home')->group(function(){
-    Route::get('/',[HomeController::class, 'index'])->name('home.index');
-   
+Route::prefix('home')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home.index');
+    Route::get('show-category/{id}', [CategoryController::class, 'showCategory'])->name('category.show');
+    Route::get('show-post/{id}', [PostController::class, 'postDetail'])->name('post.show');
+    Route::post('register-user', [HomeController::class, 'register'])->name('register.user');
+    Route::post('login-user', [HomeController::class, 'create'])->name('login.user');
+    Route::post('logout-user', [HomeController::class, 'logout'])->name('logout.user');
+    Route::post('send-comment', [CommentController::class, 'sendComment'])->name('send.comment');
 });
 
 Route::get('/dashboard', function () {
@@ -43,7 +49,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->prefix('user')->group(function () {
     Route::get('add-user', [UserController::class, 'addUser'])->name('user.add');
     Route::get('list-user', [UserController::class, 'index'])->name('user.list');
-    Route::post('save-user',[UserController::class, 'insert'])->name('user.save');
+    Route::post('save-user', [UserController::class, 'insert'])->name('user.save');
     Route::get('edit-user/{id}', [UserController::class, 'edit'])->name('user.edit');
     Route::post('update-user/{id}', [UserController::class, 'update'])->name('user.update');
     Route::get('delete-user/{id}', [UserController::class, 'delete'])->name('user.delete');
@@ -58,7 +64,6 @@ Route::middleware('auth')->prefix('category')->group(function () {
     Route::post('update-category/{id}', [CategoryController::class, 'update'])->name('category.update');
     Route::get('isdelete-category', [CategoryController::class, 'isDelete'])->name('category.isdelete');
     Route::get('rollback-category/{id}', [CategoryController::class, 'rollbackCate'])->name('category.rollback');
-    
 });
 
 Route::middleware('auth')->prefix('post')->group(function () {
@@ -70,7 +75,5 @@ Route::middleware('auth')->prefix('post')->group(function () {
     Route::post('upload', [PostController::class, 'ckeditor'])->name('ckeditor.upload');
 });
 //home page
-Route::get('show-category/{id}', [CategoryController::class, 'showCategory'])->name('category.show');
-Route::get('show-post/{id}', [PostController::class, 'postDetail'])->name('post.show');
-Route::post('register-user',[HomeController::class,'register'])->name('register.user');
+
 require __DIR__ . '/auth.php';

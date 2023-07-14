@@ -22,20 +22,20 @@
                     <?php
                     $i = 1;
                     ?>
-                    @foreach ($posts as $post) 
+                    @foreach ($posts as $item)
                     
                         <tr>
                             <td>{{$i++; }}</td>
-                            <td style="width: 30%">{{$post->title}}</td>
+                            <td style="width: 30%">{{$item->title}}</td>
                             <td>
-                                {{$post->category_name}}
+                                {{$item->category_name}}
                             </td>
                             <td>
-                                {{$post->user_name}}
+                                {{$item->user_name}}
                             </td>
                             <td>
                                 <div>
-                                    <a class="btn btn-sm btn-primary" href="{{ route('post.edit', $post->id) }}">
+                                    <a class="btn btn-sm btn-primary" href="{{ route('post.edit', $item->id) }}">
                                         <i class="bx bx-edit-alt me-1"></i> Edit</a>
                                     <a onclick="return confirm('Bạn có muốn xoá bài viết này không?')" class="btn btn-sm btn-danger" 
                                     href="">

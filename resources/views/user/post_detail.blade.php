@@ -46,62 +46,84 @@
                         <hr style="margin-top: 0px">
                     @endforeach
                 </div>
-                
-                    <div class="col-sm-9">
-                        @foreach ($posts as $post)
+
+                <div class="col-sm-9">
+                    @foreach ($posts as $post)
                         <h2>{{ $post->title }}</h2>
                         <div class="time_comment" style="text-align: right;">
                             <span>{{ $post->updated_at }}</span>
                         </div>
 
 
-                        <p>{!! $post->content  !!} </p>
+                        <p>{!! $post->content !!} </p>
 
                         <div style="text-align: right;">
-                            <strong>Tác giả:</strong> {{$post->user->name}}
+                            <strong>Tác giả:</strong>
+                            {{ $post->user->name }}
                         </div>
-                        @endforeach
-                        <hr>
-                        <h4>Ý KIẾN CỦA BẠN</h4>
-                        <div class="comment">
-                            <!-- <textarea name="comment" id="" cols="100%" rows="3" placeholder="Ý kiến của bạn"></textarea> -->
-                            <input class="form-control" type="comment" placeholder="Ý kiến của bạn">
-                            <button class="btn btn-outline-primary" type="submit">Gửi</button>
+                    @endforeach
+                    <?php var_dump($post->id); ?>
+                    <hr>
 
-                        </div>
+                    <h4>Ý KIẾN CỦA BẠN</h4>
+                    <?php
+                        if(!isset(auth()->user()->name)){
+                    ?>
+                    <div class="comment">
+                        <!-- <textarea name="comment" id="" cols="100%" rows="3" placeholder="Ý kiến của bạn"></textarea> -->
+                        <input type="hidden" name="post_id" value="{{ $post->id }}">
+                        <input class="form-control" type="comment" placeholder="Ý kiến của bạn">
                         <br>
-                        <h4>TẤT CẢ Ý KIẾN</h4>
-                        <div class="content-comment">
+                        <button onclick="return confirm('Vui lòng đăng nhập để bình luận!')" class="btn btn-outline-primary"
+                            type="submit">Gửi</button>
+                    </div>
+                    <?php }else{ ?>
+                    <div class="comment">
+                        <form action="{{ route('send.comment') }}" method="POST">
+                            @csrf
+                            <!-- <textarea name="comment" id="" cols="100%" rows="3" placeholder="Ý kiến của bạn"></textarea> -->
+                            <input type="hidden" name="post_id" value="{{ $post->id }}">
+                            <input class="form-control" name="comment" type="comment" placeholder="Ý kiến của bạn">
+                            @error('comment')
+                                <p class="text-danger">{{ $message }}</p>
+                            @enderror
+                            <br>
+                            <button class="btn btn-outline-primary" type="submit">Gửi</button>
+                        </form>
+
+
+                    </div>
+                    <?php } ?>
+
+                    <br>
+                    <h4>TẤT CẢ Ý KIẾN</h4>
+                    <div class="content-comment">
+                        @foreach ($comments as $item)
                             <p>
                                 <span class="txt-name">
-                                    <a class="nav-link nickname" href="">
-                                        <b>Dung <?php echo 'Tran'; ?> : </b> bai viet hay <?php echo 'aloooo'; ?>
+                                    <a class="nav-link nickname" >
+                                        <b>{{ $item->user->name }} : </b> {{ $item->comment }}
                                     </a>
                                 </span>
                             </p>
-                            <p>
-                                <span class="txt-name">
-                                    <a class="nav-link nickname" href="">
-                                        <b>Dung <?php echo 'Tran'; ?> : </b> bai viet hay <?php echo 'aloooo'; ?>
-                                    </a>
-                                </span>
-                            </p>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <h2>BÀI VIẾT CÙNG CHUYÊN MỤC</h2>
-                            @foreach ($postCategory as $item)
+                        @endforeach
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <h2>BÀI VIẾT CÙNG CHUYÊN MỤC</h2>
+                        @foreach ($postCategory as $item)
                             <div class="col-sm-4">
                                 <a class="nav-link active" href="{{ route('post.show', $item->id) }}">
-                                    <img src="{{ asset('/posts/' . "$item->image") }}" width="100%" height="100px" alt="">
-                                    <h6>{{$item->title}}</h6>
+                                    <img src="{{ asset('/posts/' . "$item->image") }}" width="100%" height="100px"
+                                        alt="">
+                                    <h6>{{ $item->title }}</h6>
 
                                 </a>
                             </div>
-                            @endforeach
-                        </div>
-                        <hr>
-                        {{-- <div class="row">
+                        @endforeach
+                    </div>
+                    <hr>
+                    {{-- <div class="row">
                             <div class="col-sm-6">
                                 <a class="nav-link active" href="">
                                     Điên rồ Premier League 2023/24
@@ -145,7 +167,7 @@
                                 </a>
                             </div>
                         </div> --}}
-                        {{-- <hr>
+                    {{-- <hr>
                         <div class="row">
                             <h2>BÀI VIẾT TRƯỚC ĐÓ</h2>
                             <div class="col-sm-4">
@@ -215,8 +237,8 @@
                                 </a>
                             </div>
                         </div> --}}
-                    </div>
-               
+                </div>
+
             </div>
         </div>
         <div class="col-sm-3">

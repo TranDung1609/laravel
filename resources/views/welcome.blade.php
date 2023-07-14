@@ -14,7 +14,7 @@
 <body>
     <div class="container">
         <div class="menu">
-            <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="primary">
+            <nav class="navbar navbar-expand-lg bg-info" data-bs-theme="info">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="{{ route('home.index') }}">Navbar</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -26,8 +26,10 @@
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             @foreach ($categories as $category)
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page"
-                                        href="{{ route('category.show', $category->id) }}">{{ $category->name }}</a>
+                                    <a style="margin-left: 0px" class="nav-link active" aria-current="page"
+                                        href="{{ route('category.show', $category->id) }}">
+                                        {{ $category->name }}
+                                    </a>
                                 </li>
                             @endforeach
                         </ul>
@@ -35,8 +37,32 @@
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                             <button class="btn btn-outline-dark" type="submit">Search</button>
                         </form>
+                        <?php
+                        if(!isset(auth()->user()->name)){
+                            
+                         ?>
                         <button style="margin-left: 10px;" class="btn btn-outline-dark open-modal-btn"
                             data-bs-toggle="modal" data-bs-target="#login">Login</button>
+                        <?php 
+                        }else{
+                          
+                        ?>
+                        <form action="{{ route('logout.user') }}" method="POST">
+                            @csrf
+                            <button style="margin-left: 10px;"
+                                class="btn btn-outline-dark open-modal-btn">Logout</button>
+                        </form>
+                            <span style="margin-left: 10px;" class="fw-semibold d-block">{{ auth()->user()->name }}</span>
+                        <?php 
+                        } 
+                    
+                        ?>
+
+                        {{-- <div class="flex-grow-1">
+                            <span class="fw-semibold d-block">{{ auth()->User()->name }}</span>
+
+                        </div> --}}
+
                     </div>
                 </div>
             </nav>
@@ -58,12 +84,45 @@
 
                         <!-- Modal body -->
                         <div class="modal-body">
-                            Login
+                            <h4>Login</h4>
+                            <div class="row">
+                                <form role="form" action="{{ route('login.user') }}" method="POST">
+                                    @csrf
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" for="basic-default-email">Email</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group input-group-merge">
+                                                <input type="text" class="form-control" id="email" name="email"
+                                                    placeholder="Enter your email" />
+                                            </div>
+                                            @error('email')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label"
+                                            for="basic-default-phone">PassWord</label>
+                                        <div class="col-sm-10">
+                                            <input type="password" id="password" class="form-control" name="password"
+                                                aria-describedby="password" placeholder="Password" />
+                                            @error('password')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-end">
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-success">Send</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <!-- Modal footer -->
-                        <div class="modal-footer">
+                        {{-- <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        </div>
+                        </div> --}}
 
                     </div>
                 </div>
@@ -138,6 +197,9 @@
             </div>
         </div>
         <div class="content">
+            <?php
+            //  var_dump(auth()->user());
+             ?>
             @yield('content')
 
         </div>

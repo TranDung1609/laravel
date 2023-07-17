@@ -32,6 +32,7 @@ Route::prefix('home')->group(function () {
     Route::post('login-user', [HomeController::class, 'create'])->name('login.user');
     Route::post('logout-user', [HomeController::class, 'logout'])->name('logout.user');
     Route::post('send-comment', [CommentController::class, 'sendComment'])->name('send.comment');
+    Route::get('send-mail',[HomeController::class,'sendMail'])->name('send.mail');
 });
 
 Route::get('/dashboard', function () {
@@ -53,6 +54,8 @@ Route::middleware('auth')->prefix('user')->group(function () {
     Route::get('edit-user/{id}', [UserController::class, 'edit'])->name('user.edit');
     Route::post('update-user/{id}', [UserController::class, 'update'])->name('user.update');
     Route::get('delete-user/{id}', [UserController::class, 'delete'])->name('user.delete');
+    Route::get('user-deleted-at', [UserController::class, 'isDeleted'])->name('user.deleted.at');
+    Route::get('rollback-user/{id}', [UserController::class, 'rollbackUser'])->name('user.rollback');
 });
 
 Route::middleware('auth')->prefix('category')->group(function () {
@@ -62,7 +65,7 @@ Route::middleware('auth')->prefix('category')->group(function () {
     Route::get('edit-category/{id}', [CategoryController::class, 'edit'])->name('category.edit');
     Route::get('delete-category/{id}', [CategoryController::class, 'delete'])->name('category.delete');
     Route::post('update-category/{id}', [CategoryController::class, 'update'])->name('category.update');
-    Route::get('isdelete-category', [CategoryController::class, 'isDelete'])->name('category.isdelete');
+    Route::get('category-deleted-at', [CategoryController::class, 'isDeleted'])->name('category.deleted.at');
     Route::get('rollback-category/{id}', [CategoryController::class, 'rollbackCate'])->name('category.rollback');
 });
 
@@ -73,6 +76,9 @@ Route::middleware('auth')->prefix('post')->group(function () {
     Route::get('edit-post/{id}', [PostController::class, 'edit'])->name('post.edit');
     Route::post('update-post/{id}', [PostController::class, 'update'])->name('post.update');
     Route::post('upload', [PostController::class, 'ckeditor'])->name('ckeditor.upload');
+    Route::get('delete-post/{id}', [PostController::class, 'delete'])->name('post.delete');
+    Route::get('post-deleted-at', [PostController::class, 'isDeleted'])->name('post.deleted.at');
+    Route::get('rollback-post/{id}', [PostController::class, 'rollbackPost'])->name('post.rollback');
 });
 //home page
 

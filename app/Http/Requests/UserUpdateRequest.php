@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests; 
 
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -27,7 +27,7 @@ class UserUpdateRequest extends FormRequest
     {
         return [
             'name' => ['string', 'max:255'],
-            'email' => ['email', 'max:255',  
+            'email' => ['email', 'max:255', 
             // Rule::unique(User::class)->ignore($this->user()->id)
         ],
         ];

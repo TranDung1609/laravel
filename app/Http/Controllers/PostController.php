@@ -23,17 +23,12 @@ class PostController extends Controller
     }
     public function addPost()
     {
-        $category = Category::where('is_delete', 1)->get();
+        $category = Category::all();
         return view('admin.post.add_post', ['category' => $category]);
     }
     public function index()
     {
-        $posts = DB::table('posts')
-            ->select('posts.id', 'posts.title', 'categories.name as category_name', 'users.name as user_name')
-            ->join('categories', 'categories.id', '=', 'posts.category_id')
-            ->join('users', 'users.id', '=', 'posts.user_id')
-            ->where('categories.is_delete', 1)
-            ->orderby('posts.id', 'asc')->get();
+        $posts = Post::whereHas('user')->whereHas('category')->get();
         return view('admin.post.list_post', ['posts' => $posts]);
     }
     public function insert(PostRequest $request)
@@ -44,9 +39,9 @@ class PostController extends Controller
         if ($request->hasFile('image')) {
             $uploadPath = 'posts';
             $file = $request->file('image');
-            $extention = $file->getClientOriginalExtension();
+            $extension = $file->getClientOriginalExtension();
             $nameImage = current(explode('.', $file->getClientOriginalName()));
-            $filename = time() . $nameImage . '.' . $extention;
+            $filename = time() . $nameImage . '.' . $extension;
             $file->move($uploadPath, $filename);
             $data['image'] = $filename;
             Post::create($data);
@@ -56,7 +51,7 @@ class PostController extends Controller
     public function edit($id)
     {
         $posts = Post::where('id', $id)->get();
-        $category = Category::where('is_delete', 1)->get();
+        $category = Category::all();
         return view('admin.post.edit_post', ['posts' => $posts], ['categories' => $category]);
     }
     public function update(UpdatePostRequest $request, $id)
@@ -83,12 +78,24 @@ class PostController extends Controller
         return Redirect::to('post/list-post');
     }
 
+    public function isDeleted()
+    {
+
+        $posts = Post::onlyTrashed()->get();
+        return view('admin/post/deleted_post', ['posts' => $posts]);
+    }
+
+    public function rollbackPost($id)
+    {
+        Post::withTrashed()->where('id', $id)->restore();
+        return Redirect::to('post/list-post');
+    }
+
     //home page
     public function postDetail($id)
     {
-
         $posts = Post::where('id', $id)->get();
-        $categories = Category::where('is_delete', 1)->where('status', 2)->get();
+        $categories = Category::where('status', 2)->get();
         foreach ($posts as $post) {
             $category_id = $post->category_id;
         }

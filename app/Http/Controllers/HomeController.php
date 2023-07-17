@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\Category;
 use App\Models\User;
+use App\Notifications\InvoicePaid;
 use App\Services\HomeService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -14,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
+
 session_start();
 class HomeController extends Controller
 {
@@ -25,7 +28,7 @@ class HomeController extends Controller
 
     public function index()
     {
-        $categories = Category::where('is_delete', 1)->where('status', 2)->get();
+        $categories = Category::where('status', 2)->get();
         //home page world
         $world = $this->service->world();
         $titleWorld = $this->service->titleWorld();
@@ -56,7 +59,7 @@ class HomeController extends Controller
             [
                 'world' => $world,
                 'titleWorld' => $titleWorld,
-                'worlds' => $worlds,
+                'worlds' => $worlds, 
                 'vietnam' => $vietnam,
                 'titleVietnam' => $titleVietnam,
                 'vietnams' => $vietnams,
@@ -66,35 +69,49 @@ class HomeController extends Controller
                 'people' => $people,
                 'transfer' => $transfer,
                 'hot' => $hot,
-                'hots' => $hots,
+                'hots' => $hots, 
                 'new' => $new,
                 'news' => $news,
                 'focus' => $focus
             ]
         );
     }
-    public function register(UserRequest $request){
-        $user=User::create([
+    public function register(UserRequest $request)
+    {
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
         event(new Registered($user));
         Auth::login($user);
-       return Redirect::to('home');
+        return Redirect::to('home');
     }
-    public function create(LoginRequest $request){
+    public function create(LoginRequest $request)
+    {
         $request->authenticate();
         $request->session()->regenerate();
-        return redirect()->intended('home');
+        if($request->session()->regenerate()){
+            session()->flash('message','Đăng nhập thành công');
+            return Redirect::to('home');
+        }else{
+            session()->flash('message','Đăng nhập thất bại');
+            return Redirect::to('home');
+        }
     }
     public function logout(Request $request)
-	{
-		Auth::guard('web')->logout();
-
+    {
+        Auth::guard('web')->logout();
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
         return redirect()->intended('home');
-	}
+    }
+    public function sendMail(Request $request)
+    {
+        $data = $request->all();
+        $email = $data['email'];
+        $user = User::where('email',$email)->get();
+        Notification::send($user, new InvoicePaid());
+        return redirect()->intended('home');
+    }
 }

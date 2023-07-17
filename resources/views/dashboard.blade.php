@@ -115,6 +115,11 @@
                                 <div data-i18n="Without menu">List User</div>
                             </a>
                         </li>
+                        <li class="menu-item">
+                            <a href="{{ route('user.deleted.at') }}" class="menu-link">
+                                <div data-i18n="Without menu">User Deleted</div>
+                            </a>
+                        </li>
                         
                     </ul>
                 </li>
@@ -135,8 +140,8 @@
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="{{ route('category.isdelete') }}" class="menu-link">
-                                <div data-i18n="Without menu">IsDelete Category</div>
+                            <a href="{{ route('category.deleted.at') }}" class="menu-link">
+                                <div data-i18n="Without menu">Category Deleted</div>
                             </a>
                         </li>
                     </ul>
@@ -155,6 +160,11 @@
                         <li class="menu-item">
                             <a href="{{ route('post.list') }}" class="menu-link">
                                 <div data-i18n="Without menu">List Post</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="{{ route('post.deleted.at') }}" class="menu-link">
+                                <div data-i18n="Without menu">Post Deleted</div>
                             </a>
                         </li>
                     </ul>
@@ -214,7 +224,7 @@
                                     <div class="dropdown-divider"></div>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
                                         <i class="bx bx-user me-2"></i>
                                         <span class="align-middle">Profile</span>
                                     </a>

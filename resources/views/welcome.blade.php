@@ -115,15 +115,11 @@
                                         <div class="col-sm-10">
                                             <button type="submit" class="btn btn-success">Send</button>
                                         </div>
+                                        <div><a href="#mail" data-bs-toggle="modal" >Forgot password ?</a></div>
                                     </div>
                                 </form>
                             </div>
                         </div>
-                        <!-- Modal footer -->
-                        {{-- <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        </div> --}}
-
                     </div>
                 </div>
             </div>
@@ -195,11 +191,59 @@
                     </div>
                 </div>
             </div>
+            <div class="modal" id="mail">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <button style="margin-left: 150px;" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#register">Register</button>
+                            <button style="margin-left: 10px;" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#login">Login</button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <h4>Forgot Password ?</h4>
+                            <div class="row">
+                                <form role="form" action="{{route('send.mail')}}">
+                                    @csrf
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" for="basic-default-email">Email</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group input-group-merge">
+                                                <input type="text" class="form-control" id="email" name="email"
+                                                    placeholder="Enter your email" />
+                                            </div>
+                                            @error('email')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-end">
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-success">Send</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="content">
             <?php
             //  var_dump(auth()->user());
              ?>
+             @if(session()->has('message'))
+             <div class="alert alert-success">
+                {{session()->get('message')}}
+             </div>
+             @endif
+             
             @yield('content')
 
         </div>
@@ -258,7 +302,7 @@
         </div>
     </div>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>

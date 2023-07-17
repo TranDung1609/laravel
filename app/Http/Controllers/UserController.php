@@ -25,7 +25,7 @@ class UserController extends Controller
     }
     public function insert(UserRequest $request)
     {
-        $user=User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -41,15 +41,26 @@ class UserController extends Controller
         return view('admin.user.edit_user', ['users' => $user]);
     }
     public function update(UserUpdateRequest $request, $id)
-    {   
+    {
         $data = $request->all();
         User::find($id)->update($data);
         return Redirect::to('user/list-user');
     }
-    public function delete(Request $request, $id)
+    public function delete(Request $request)
     {
-        $data = $request->all();
-        User::find($id)->delete($data);
+        $user = User::find($request->id);
+        $user->delete();
+        return Redirect::to('user/list-user');
+    }
+    public function isDeleted()
+    {
+        $users = User::onlyTrashed()->get();
+        return view('admin/user/deleted_user', ['users' => $users]);
+    }
+
+    public function rollbackUser($id)
+    {
+        User::withTrashed()->where('id',$id)->restore();
         return Redirect::to('user/list-user');
     }
 }

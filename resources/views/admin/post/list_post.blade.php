@@ -28,17 +28,17 @@
                             <td>{{$i++; }}</td>
                             <td style="width: 30%">{{$item->title}}</td>
                             <td>
-                                {{$item->category_name}}
+                                {{$item->category->name}}
                             </td>
                             <td>
-                                {{$item->user_name}}
+                                {{$item->user->name}}
                             </td>
                             <td>
                                 <div>
                                     <a class="btn btn-sm btn-primary" href="{{ route('post.edit', $item->id) }}">
                                         <i class="bx bx-edit-alt me-1"></i> Edit</a>
                                     <a onclick="return confirm('Bạn có muốn xoá bài viết này không?')" class="btn btn-sm btn-danger" 
-                                    href="">
+                                    href="{{ route('post.delete', $item->id) }}">
                                         <i class="bx bx-trash me-1"></i> Delete</a>
                                 </div>
                             </td>

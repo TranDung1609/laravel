@@ -22,7 +22,7 @@ class CategoryController extends Controller
     }
     public function index()
     {
-        $category = Category::where('is_delete', 1)->get();
+        $category = Category::all();
         return view('admin.Category.list_category', ['cate' => $category]);
     }
     public function insert(CategoryRequest $request)
@@ -48,22 +48,19 @@ class CategoryController extends Controller
     public function delete($id)
     {
 
-        $category = Category::find($id);
-        $category->is_delete = "0";
-        $category->save();
+        Category::find($id)->delete();
+
         return Redirect::to('category/list-category');
     }
-    public function isDelete()
+    public function isDeleted()
     {
-        $category = Category::where('is_delete', 0)->get();
-        return view('admin.category.isdelete_category', ['cate' => $category]);
+        $category = Category::onlyTrashed()->get();
+        return view('admin/category/deleted_category', ['cate' => $category]);
     }
     public function rollbackCate($id)
     {
 
-        $category = Category::find($id);
-        $category->is_delete = "1";
-        $category->save();
+        Category::withTrashed()->where('id', $id)->restore();
         return Redirect::to('category/list-category');
     }
 
@@ -71,37 +68,36 @@ class CategoryController extends Controller
 
     public function showCategory($id)
     {
-        $categories = Category::where('is_delete', 1)->where('status', 2)->get();
+        $categories = Category::where('status', 2)->get();
         $category = Category::where('id', $id)->get();
-        
-        foreach($category as $cate){
+        foreach ($category as $cate) {
             $name = $cate->name;
         }
-        //home page hot
-        $hot = $this->service->hot();
-        $hots = $this->service->hots();
-        //home page tieu diem
-        $focus = $this->service->focus();
-        //home page new
-        $new = $this->service->newPost();
-        $news = $this->service->newsPost();
-        if(isset($name)){
+        if (isset($name)) {
             $postCategory = $this->service->postCategory($id);
-        return view(
-            'user.category_detail',
-            ['category' => $category],
-            [
-                'categories' => $categories,
-                'postCategory' => $postCategory,
-                'hot' => $hot,
-                'hots' => $hots,
-                'focus' => $focus,
-                'new' => $new,
-                'news' => $news,
-            ]
-        );
-    }else{
-        return Redirect::to('home');
-    }
+            //home page hot
+            $hot = $this->service->hot();
+            $hots = $this->service->hots();
+            //home page tieu diem
+            $focus = $this->service->focus();
+            //home page new
+            $new = $this->service->newPost();
+            $news = $this->service->newsPost();
+            return view(
+                'user.category_detail',
+                ['category' => $category],
+                [
+                    'categories' => $categories,
+                    'postCategory' => $postCategory,
+                    'hot' => $hot,
+                    'hots' => $hots,
+                    'focus' => $focus,
+                    'new' => $new,
+                    'news' => $news,
+                ]
+            );
+        } else {
+            return Redirect::to('home');
+        }
     }
 }

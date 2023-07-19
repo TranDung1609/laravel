@@ -10,7 +10,7 @@
                 <div class="card mb-4">
 
                     <div class="card-body">
-                        @foreach ($posts as $post)
+{{--                        @foreach ($posts as $post)--}}
                             <form role="form" action="{{ route('post.update', $post->id) }}" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
@@ -71,7 +71,7 @@
                                 </div>
 
                             </form>
-                        @endforeach
+{{--                        @endforeach--}}
                     </div>
 
                 </div>

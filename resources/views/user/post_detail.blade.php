@@ -4,7 +4,8 @@
         <div class="col-sm-9">
             <nav style="margin-top: 10px" aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('home.index') }}">TRANG CHỦ</a>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('home.index') }}">TRANG
+                            CHỦ</a>
                     </li>
                     @foreach ($posts as $post)
                         <li class="breadcrumb-item active" aria-current="page">
@@ -66,44 +67,51 @@
                     <hr>
 
                     <h4>Ý KIẾN CỦA BẠN</h4>
-                    <?php
-                        if(!isset(auth()->user()->name)){
-                    ?>
-                    <div class="comment">
-                        <!-- <textarea name="comment" id="" cols="100%" rows="3" placeholder="Ý kiến của bạn"></textarea> -->
-                        <input type="hidden" name="post_id" value="{{ $post->id }}">
-                        <input class="form-control" type="comment" placeholder="Ý kiến của bạn">
-                        <br>
-                        <button onclick="return confirm('Vui lòng đăng nhập để bình luận!')" class="btn btn-outline-primary"
-                            type="submit">Gửi</button>
-                    </div>
-                    <?php }else{ ?>
-                    <div class="comment">
-                        <form action="{{ route('send.comment') }}" method="POST">
-                            @csrf
+                    @can('create-comment')
+                            <?php
+                        if (!isset(auth()->user()->name)){
+                            ?>
+                        <div class="comment">
                             <!-- <textarea name="comment" id="" cols="100%" rows="3" placeholder="Ý kiến của bạn"></textarea> -->
                             <input type="hidden" name="post_id" value="{{ $post->id }}">
-                            <input class="form-control" name="comment" type="comment" placeholder="Ý kiến của bạn">
-                            @error('comment')
-                                <p class="text-danger">{{ $message }}</p>
-                            @enderror
+                            <input class="form-control" type="comment" placeholder="Ý kiến của bạn">
                             <br>
-                            <button class="btn btn-outline-primary" type="submit">Gửi</button>
-                        </form>
-
-
-                    </div>
-                    <?php } ?>
-
+                            <button onclick="return confirm('Vui lòng đăng nhập để bình luận!')"
+                                    class="btn btn-outline-primary"
+                                    type="submit">Gửi
+                            </button>
+                        </div>
+                        <?php }else{ ?>
+                        <div class="comment">
+                            <form action="{{ route('send.comment') }}" method="POST">
+                                @csrf
+                                <!-- <textarea name="comment" id="" cols="100%" rows="3" placeholder="Ý kiến của bạn"></textarea> -->
+                                <input type="hidden" name="post_id" value="{{ $post->id }}">
+                                <input class="form-control" name="comment" type="comment" placeholder="Ý kiến của bạn">
+                                @error('comment')
+                                <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                                <br>
+                                <button class="btn btn-outline-primary" type="submit">Gửi</button>
+                            </form>
+                        </div>
+                            <?php } ?>
+                    @endcan
                     <br>
                     <h4>TẤT CẢ Ý KIẾN</h4>
                     <div class="content-comment">
                         @foreach ($comments as $item)
                             <p>
                                 <span class="txt-name">
-                                    <a class="nav-link nickname" >
+                                    <a class="nav-link nickname">
                                         <b>{{ $item->user->name }} : </b> {{ $item->comment }}
                                     </a>
+                                    @can('delete-comment',$item)
+                                    <a onclick="return confirm('Bạn có muốn xoá category này không?')"
+                                       class="btn btn-sm btn-danger"
+                                       href="{{ route('comment.delete', $item->id) }}">
+                                            <i class="bx bx-trash me-1"></i> Delete</a>
+                                    @endcan
                                 </span>
                             </p>
                         @endforeach
@@ -115,7 +123,7 @@
                             <div class="col-sm-4">
                                 <a class="nav-link active" href="{{ route('post.show', $item->id) }}">
                                     <img src="{{ asset('/posts/' . "$item->image") }}" width="100%" height="100px"
-                                        alt="">
+                                         alt="">
                                     <h6>{{ $item->title }}</h6>
 
                                 </a>
@@ -257,7 +265,7 @@
                     <div class="col-sm-6 ">
                         <a class="nav-link active" href="{{ route('post.show', $item->id) }}">
                             <img src="{{ asset('/posts/' . "$item->image") }}" width="100%" height="80px"
-                                alt="">
+                                 alt="">
                             {{ $item->title }}
                         </a>
                     </div>

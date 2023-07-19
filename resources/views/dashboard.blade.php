@@ -11,26 +11,26 @@
  -->
 <!-- beautify ignore:start -->
 <html
-        lang="en"
-        class="light-style layout-menu-fixed"
-        dir="ltr"
-        data-theme="theme-default"
-        data-assets-path="../assets/"
-        data-template="vertical-menu-template-free"
+    lang="en"
+    class="light-style layout-menu-fixed"
+    dir="ltr"
+    data-theme="theme-default"
+    data-assets-path="../assets/"
+    data-template="vertical-menu-template-free"
 >
 <head>
     <meta charset="utf-8"/>
     <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
     <title>Dashboard - Analytics | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
 
     <meta name="description" content=""/>
 
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('../public/assets/img/favicon/favicon.ico') }}"/>
 
@@ -38,16 +38,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link
-            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-            rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet"
     />
 
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="{{ asset('../public/assets/vendor/fonts/boxicons.css') }}"/>
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="{{ asset('../public/assets/vendor/css/core.css') }}" class="template-customizer-core-css"/>
-    <link rel="stylesheet" href="{{ asset('../public/assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css"/>
+    <link rel="stylesheet" href="{{ asset('../public/assets/vendor/css/core.css') }}"
+          class="template-customizer-core-css"/>
+    <link rel="stylesheet" href="{{ asset('../public/assets/vendor/css/theme-default.css') }}"
+          class="template-customizer-theme-css"/>
     <link rel="stylesheet" href="{{ asset('../public/assets/css/demo.css') }}"/>
 
     <!-- Vendors CSS -->
@@ -55,9 +57,9 @@
 
     <link rel="stylesheet" href="{{ asset('../public/assets/vendor/libs/apex-charts/apex-charts.css') }}"/>
 
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css"/>
 
-    
+
     <!-- Page CSS -->
 
     <!-- Helpers -->
@@ -98,77 +100,122 @@
                 </li>
 
                 <!-- Layouts -->
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <i class="menu-icon tf-icons bx bx-layout"></i>
-                        <div data-i18n="Users">Users</div>
-                    </a>
+                @can('user')
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons bx bx-layout"></i>
+                            <div data-i18n="Users">Users</div>
+                        </a>
 
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="{{ route('user.add') }}" class="menu-link">
-                                <div data-i18n="Without menu">Add User</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="{{ route('user.list') }}" class="menu-link">
-                                <div data-i18n="Without menu">List User</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="{{ route('user.deleted.at') }}" class="menu-link">
-                                <div data-i18n="Without menu">User Deleted</div>
-                            </a>
-                        </li>
-                        
-                    </ul>
-                </li>
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <i class="menu-icon tf-icons bx bx-layout"></i>
-                        <div data-i18n="Categories">Categories</div>
-                    </a>
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="{{ route('category.add') }}" class="menu-link">
-                                <div data-i18n="Without menu">Add Category</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="{{ route('category.list') }}" class="menu-link">
-                                <div data-i18n="Without menu">List Category</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="{{ route('category.deleted.at') }}" class="menu-link">
-                                <div data-i18n="Without menu">Category Deleted</div>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                        <ul class="menu-sub">
+
+                            <li class="menu-item">
+                                <a href="{{ route('user.add') }}" class="menu-link">
+                                    <div data-i18n="Without menu">Add User</div>
+                                </a>
+                            </li>
+
+                            <li class="menu-item">
+                                <a href="{{ route('user.list') }}" class="menu-link">
+                                    <div data-i18n="Without menu">List User</div>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="{{ route('user.deleted.at') }}" class="menu-link">
+                                    <div data-i18n="Without menu">User Deleted</div>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                @endcan
+                @can('category')
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons bx bx-layout"></i>
+                            <div data-i18n="Categories">Categories</div>
+                        </a>
+                        <ul class="menu-sub">
+                            <li class="menu-item">
+                                <a href="{{ route('category.add') }}" class="menu-link">
+                                    <div data-i18n="Without menu">Add Category</div>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="{{ route('category.list') }}" class="menu-link">
+                                    <div data-i18n="Without menu">List Category</div>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="{{ route('category.deleted.at') }}" class="menu-link">
+                                    <div data-i18n="Without menu">Category Deleted</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endcan
+                @can('role')
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons bx bx-layout"></i>
+                            <div data-i18n="Categories">Roles</div>
+                        </a>
+                        <ul class="menu-sub">
+                            <li class="menu-item">
+                                <a href="{{ route('role.add') }}" class="menu-link">
+                                    <div data-i18n="Without menu">Add Role</div>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="{{ route('role.list') }}" class="menu-link">
+                                    <div data-i18n="Without menu">List Role</div>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="{{ route('role.deleted.at') }}" class="menu-link">
+                                    <div data-i18n="Without menu">Role Deleted</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endcan
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons bx bx-layout"></i>
                         <div data-i18n="Posts">Posts</div>
                     </a>
                     <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="{{ route('post.add') }}" class="menu-link">
-                                <div data-i18n="Without menu">Add Post</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="{{ route('post.list') }}" class="menu-link">
-                                <div data-i18n="Without menu">List Post</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="{{ route('post.deleted.at') }}" class="menu-link">
-                                <div data-i18n="Without menu">Post Deleted</div>
-                            </a>
-                        </li>
+                        @can('create-post')
+                            <li class="menu-item">
+                                <a href="{{ route('post.add') }}" class="menu-link">
+                                    <div data-i18n="Without menu">Add Post</div>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('view-post')
+                            <li class="menu-item">
+                                <a href="{{ route('post.list') }}" class="menu-link">
+                                    <div data-i18n="Without menu">List Post</div>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('restore-post')
+                            <li class="menu-item">
+                                <a href="{{ route('post.deleted.at') }}" class="menu-link">
+                                    <div data-i18n="Without menu">Post Deleted</div>
+                                </a>
+                            </li>
+                        @endcan
                     </ul>
                 </li>
+                @can('view-comment')
+                    <li class="menu-item">
+                        <a href="{{ route('comment.deleted.at') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-layout"></i>
+                            <div data-i18n="Posts">Comments Deleted</div>
+                        </a>
+                    </li>
+                @endcan
             </ul>
         </aside>
         <!-- / Menu -->
@@ -176,7 +223,9 @@
         <!-- Layout container -->
         <div class="layout-page">
             <!-- Navbar -->
-            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+            <nav
+                class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+                id="layout-navbar">
                 <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
                     <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
                         <i class="bx bx-menu bx-sm"></i>
@@ -188,7 +237,8 @@
                     <div class="navbar-nav align-items-center">
                         <div class="nav-item d-flex align-items-center">
                             <i class="bx bx-search fs-4 lh-0"></i>
-                            <input type="text" class="form-control border-0 shadow-none" placeholder="Search..." aria-label="Search..." />
+                            <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
+                                   aria-label="Search..."/>
                         </div>
                     </div>
                     <!-- /Search -->
@@ -196,30 +246,33 @@
 
                         <!-- User -->
                         <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
+                               data-bs-toggle="dropdown">
                                 <div class="avatar avatar-online">
-                                    <img src="{{ asset('../public/assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle" />
+                                    <img src="{{ asset('../public/assets/img/avatars/1.png') }}" alt
+                                         class="w-px-40 h-auto rounded-circle"/>
                                 </div>
                             </a>
-                            
+
                             <ul class="dropdown-menu dropdown-menu-end">
-                            
+
                                 <li>
                                     <a class="dropdown-item" href="#">
                                         <div class="d-flex">
                                             <div class="flex-shrink-0 me-3">
                                                 <div class="avatar avatar-online">
-                                                    <img src="{{ asset('../public/assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle" />
+                                                    <img src="{{ asset('../public/assets/img/avatars/1.png') }}" alt
+                                                         class="w-px-40 h-auto rounded-circle"/>
                                                 </div>
                                             </div>
                                             <div class="flex-grow-1">
                                                 <span class="fw-semibold d-block">{{ auth()->User()->name }}</span>
-                                            
+
                                             </div>
                                         </div>
                                     </a>
                                 </li>
-                                
+
                                 <li>
                                     <div class="dropdown-divider"></div>
                                 </li>
@@ -232,13 +285,13 @@
                                 <li>
                                     <div class="dropdown-divider"></div>
                                 </li>
-                                <form  action="{{ route('logout') }}" method="POST">
+                                <form action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <input type="submit" class="dropdown-item" value="Logout">
-                                  </form>
-                                
+                                </form>
+
                             </ul>
-                           
+
                         </li>
                         <!--/ User -->
                     </ul>
@@ -251,59 +304,62 @@
                 <section class="wrapper">
                     @yield('admin_content')
                 </section>
-            <!-- Content wrapper -->
+                <!-- Content wrapper -->
             </div>
             <!-- / Layout page -->
-            </div>
-         
-            <!-- Overlay -->
-            <div class="layout-overlay layout-menu-toggle"></div>
-            </div>
-            <!-- / Layout wrapper -->
-            <script src="{{ asset('../public/assets/vendor/libs/jquery/jquery.js') }}"></script>
-            <script src="{{ asset('../public/assets/vendor/libs/popper/popper.js') }}"></script>
-            <script src="{{ asset('../public/assets/vendor/js/bootstrap.js') }}"></script>
-            <script src="{{ asset('../public/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
-         
-            <script src="{{ asset('../public/assets/vendor/js/menu.js') }}"></script>
-            <!-- endbuild -->
-         
-            <!-- Vendors JS -->
-            <script src="{{ asset('../public/assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
-         
-            <!-- Main JS -->
-            <script src="{{ asset('../public/assets/js/main.js') }}"></script>
-         
-            <!-- Page JS -->
-            <script src="{{ asset('../public/assets/js/dashboards-analytics.js') }}"></script>
-         
-            <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
-         
-            <!-- Place this tag in your head or just before your close body tag. -->
-            <script async defer src="https://buttons.github.io/buttons.js"></script>
-            <script src="{{ asset('ckeditor5-build-classic/ckeditor.js') }}"></script>
-            
-            <script>
-                ClassicEditor
-                    .create(document.querySelector('#editor'), {
-                        ckfinder: {
-                            uploadUrl: '{{ route('image.upload') . '?_token=' . csrf_token() }}',
-                        }
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });
-            </script>
-            <script>
-                $(document).ready(function() {
-                    $('#table_id').DataTable();
-                });
-            </script>
-            <script>
-                $(document).ready(function() {
-                    $('.js-example-basic-multiple').select2();
-                });
-            </script>
-            </body>
-         
-            </html>
+        </div>
+
+        <!-- Overlay -->
+        <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
+    <script src="{{ asset('../public/assets/vendor/libs/jquery/jquery.js') }}"></script>
+    <script src="{{ asset('../public/assets/vendor/libs/popper/popper.js') }}"></script>
+    <script src="{{ asset('../public/assets/vendor/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('../public/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+
+    <script src="{{ asset('../public/assets/vendor/js/menu.js') }}"></script>
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+    <script src="{{ asset('../public/assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
+
+    <!-- Main JS -->
+    <script src="{{ asset('../public/assets/js/main.js') }}"></script>
+
+    <!-- Page JS -->
+    <script src="{{ asset('../public/assets/js/dashboards-analytics.js') }}"></script>
+
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="{{ asset('ckeditor5-build-classic/ckeditor.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                ckfinder: {
+                    uploadUrl: '{{ route('image.upload') . '?_token=' . csrf_token() }}',
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#table_id').DataTable();
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.js-example-basic-multiple').select2();
+        });
+    </script>
+</div>
+</body>
+
+
+</html>

@@ -18,27 +18,31 @@ class CategoryController extends Controller
     }
     public function addCategory()
     {
+        $this->authorize('category');
         return view('admin.category.add_category');
     }
     public function index()
     {
+        $this->authorize('category');
         $category = Category::all();
         return view('admin.Category.list_category', ['cate' => $category]);
     }
     public function insert(CategoryRequest $request)
     {
+        $this->authorize('category');
         $data = $request->all();
         Category::create($data);
         return Redirect::to('category/list-category');
     }
     public function edit($id)
     {
+        $this->authorize('category');
         $categories = Category::where('id', $id)->get();
         return view('admin.category.edit_category', ['categories' => $categories]);
     }
     public function update(CategoryRequest $request, $id)
     {
-
+        $this->authorize('category');
         $data = $request->all();
         $category = Category::find($id)->fill($data);
         $category->update($data);
@@ -47,19 +51,20 @@ class CategoryController extends Controller
     }
     public function delete($id)
     {
-
+        $this->authorize('category');
         Category::find($id)->delete();
 
         return Redirect::to('category/list-category');
     }
     public function isDeleted()
     {
+        $this->authorize('category');
         $category = Category::onlyTrashed()->get();
         return view('admin/category/deleted_category', ['cate' => $category]);
     }
     public function rollbackCate($id)
     {
-
+        $this->authorize('category');
         Category::withTrashed()->where('id', $id)->restore();
         return Redirect::to('category/list-category');
     }

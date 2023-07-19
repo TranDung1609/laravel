@@ -36,10 +36,38 @@
                                 <label class="col-sm-2 col-form-label" for="basic-default-phone">PassWord</label>
                                 <div class="col-sm-10">
                                     <input type="password" id="password" class="form-control" name="password"
-                                        aria-describedby="password" />
+                                        aria-describedby="password" placeholder="Password" />
                                     @error('password')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
+                                </div>
+                            </div>
+                            {{-- <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-desc">Role</label>
+                                <div class="col-sm-10">
+                                    <select name="role_id[]" lass="js-example-basic-multiple form-control"
+                                    multiple="multiple">
+
+                                        @foreach ($roles as $role)
+                                            <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('category_id')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div> --}}
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-desc">Role</label>
+                                <div class="col-sm-10">
+                                    <select name="role_id[]" class="js-example-basic-multiple form-control"
+                                        multiple="multiple" >
+                                        @foreach ($roles as $role)
+                                            <option  value="{{ $role->id }}">{{ $role->name }}</option>
+                                        @endforeach
+                                    </select>
+                                   
                                 </div>
                             </div>
                             <div class="row justify-content-end">

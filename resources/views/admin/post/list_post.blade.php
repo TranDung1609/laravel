@@ -23,9 +23,9 @@
                     $i = 1;
                     ?>
                     @foreach ($posts as $item)
-                    
+
                         <tr>
-                            <td>{{$i++; }}</td>
+                            <td>{{$i++ }}</td>
                             <td style="width: 30%">{{$item->title}}</td>
                             <td>
                                 {{$item->category->name}}
@@ -35,18 +35,22 @@
                             </td>
                             <td>
                                 <div>
+                                    @can('update-post',$item)
                                     <a class="btn btn-sm btn-primary" href="{{ route('post.edit', $item->id) }}">
                                         <i class="bx bx-edit-alt me-1"></i> Edit</a>
-                                    <a onclick="return confirm('Bạn có muốn xoá bài viết này không?')" class="btn btn-sm btn-danger" 
+                                    @endcan
+                                    @can('delete-post',$item)
+                                    <a onclick="return confirm('Bạn có muốn xoá bài viết này không?')" class="btn btn-sm btn-danger"
                                     href="{{ route('post.delete', $item->id) }}">
                                         <i class="bx bx-trash me-1"></i> Delete</a>
+                                        @endcan
                                 </div>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-            
+
         </div>
     </div>
 </div>

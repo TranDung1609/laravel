@@ -23,16 +23,19 @@ class PostController extends Controller
     }
     public function addPost()
     {
+        $this->authorize('create-post');
         $category = Category::all();
         return view('admin.post.add_post', ['category' => $category]);
     }
     public function index()
     {
+        $this->authorize('view-post');
         $posts = Post::whereHas('user')->whereHas('category')->get();
         return view('admin.post.list_post', ['posts' => $posts]);
     }
     public function insert(PostRequest $request)
     {
+        $this->authorize('create-post');
         $data = $request->all();
         User::findOrFail(Auth::user()->id);
         $data['user_id'] = $request->user()->id;
@@ -50,14 +53,21 @@ class PostController extends Controller
     }
     public function edit($id)
     {
-        $posts = Post::where('id', $id)->get();
-        $category = Category::all();
-        return view('admin.post.edit_post', ['posts' => $posts], ['categories' => $category]);
+
+        $posts = Post::where('id', $id)->first();
+        $this->authorize('update-post',$posts);
+        $categories = Category::all();
+        return view('admin.post.edit_post', [
+            'post' => $posts,
+            'categories' => $categories
+        ]);
     }
     public function update(UpdatePostRequest $request, $id)
     {
+
         $data = $request->all();
         $post = Post::find($id)->fill($data);
+        $this->authorize('update-post',$post);
         if ($request->hasFile('image')) {
             $uploadPath = 'posts';
             $file = $request->file('image');
@@ -73,20 +83,23 @@ class PostController extends Controller
     }
     public function delete(Request $request)
     {
+
         $post = Post::find($request->id);
+        $this->authorize('delete-post',$post);
         $post->delete();
         return Redirect::to('post/list-post');
     }
 
     public function isDeleted()
     {
-
+        $this->authorize('restore-post');
         $posts = Post::onlyTrashed()->get();
         return view('admin/post/deleted_post', ['posts' => $posts]);
     }
 
     public function rollbackPost($id)
     {
+        $this->authorize('restore-post');
         Post::withTrashed()->where('id', $id)->restore();
         return Redirect::to('post/list-post');
     }

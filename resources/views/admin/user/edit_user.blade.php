@@ -41,6 +41,35 @@
                                             name="password" id="basic-default-name" placeholder="Mật khẩu" readonly />
                                     </div>
                                 </div>
+                                {{-- <div class="row mb-3">
+                                    <label class="col-sm-2 col-form-label" for="basic-default-desc">Vai trò</label>
+                                    <div class="col-sm-10">
+                                        <select name="role_id[]" lass="js-example-basic-multiple form-control"
+                                        multiple="multiple">
+                                            @foreach ($roles as $role)
+                                                <option {{ $user->role_id == $role->id ? 'selected' : '' }}
+                                                    value="{{ $role->id }}">{{ $role->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div> --}}
+                                <div class="row mb-3">
+                                    <label class="col-sm-2 col-form-label" for="basic-default-desc">Role</label>
+                                    <div class="col-sm-10">
+                                        <select name="role_id[]" class="js-example-basic-multiple form-control"
+                                            multiple="multiple">
+    
+                                            @foreach ($roles as $role)
+                                                <option {{ $user->roles->contains('id', $role->id)  ? 'selected' : '' }}
+                                                    value="{{ $role->id }}">{{ $role->name }}</option>
+                                            @endforeach
+                                        </select>
+                                       
+                                    </div>
+                                </div>
+
+
+
                                 <div class="row justify-content-end">
                                     <div class="col-sm-10">
                                         <button type="submit" class="btn btn-success">Send</button>

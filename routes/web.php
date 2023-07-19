@@ -7,6 +7,7 @@ use App\Http\Controllers\CkeditorController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -33,6 +34,10 @@ Route::prefix('home')->group(function () {
     Route::post('logout-user', [HomeController::class, 'logout'])->name('logout.user');
     Route::post('send-comment', [CommentController::class, 'sendComment'])->name('send.comment');
     Route::get('send-mail',[HomeController::class,'sendMail'])->name('send.mail');
+    Route::get('delete-comment/{id}', [CommentController::class, 'delete'])->name('comment.delete');
+    Route::get('comment-deleted-at', [CommentController::class, 'isDeleted'])->name('comment.deleted.at');
+    Route::get('rollback-comment/{id}', [CommentController::class, 'rollbackComment'])->name('comment.rollback');
+//    Route::post('password-reset', [HomeController::class, 'resetPassword'])->name('password.reset');
 });
 
 Route::get('/dashboard', function () {
@@ -79,6 +84,17 @@ Route::middleware('auth')->prefix('post')->group(function () {
     Route::get('delete-post/{id}', [PostController::class, 'delete'])->name('post.delete');
     Route::get('post-deleted-at', [PostController::class, 'isDeleted'])->name('post.deleted.at');
     Route::get('rollback-post/{id}', [PostController::class, 'rollbackPost'])->name('post.rollback');
+});
+
+Route::middleware('auth')->prefix('role')->group(function () {
+    Route::get('add-role', [RoleController::class, 'addRole'])->name('role.add');
+    Route::get('list-role', [RoleController::class, 'index'])->name('role.list');
+    Route::post('save-role', [RoleController::class, 'insert'])->name('role.save');
+    Route::get('edit-role/{id}', [RoleController::class, 'edit'])->name('role.edit');
+    Route::post('update-role/{id}', [RoleController::class, 'update'])->name('role.update');
+    Route::get('delete-role/{id}', [RoleController::class, 'delete'])->name('role.delete');
+    Route::get('role-deleted-at', [RoleController::class, 'isDeleted'])->name('role.deleted.at');
+    Route::get('rollback-role/{id}', [RoleController::class, 'rollbackRole'])->name('role.rollback');
 });
 //home page
 

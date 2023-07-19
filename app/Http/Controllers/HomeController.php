@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\Category;
+use Illuminate\Support\Facades\Password;
 use App\Models\User;
 use App\Notifications\InvoicePaid;
 use App\Services\HomeService;
@@ -59,7 +60,7 @@ class HomeController extends Controller
             [
                 'world' => $world,
                 'titleWorld' => $titleWorld,
-                'worlds' => $worlds, 
+                'worlds' => $worlds,
                 'vietnam' => $vietnam,
                 'titleVietnam' => $titleVietnam,
                 'vietnams' => $vietnams,
@@ -69,7 +70,7 @@ class HomeController extends Controller
                 'people' => $people,
                 'transfer' => $transfer,
                 'hot' => $hot,
-                'hots' => $hots, 
+                'hots' => $hots,
                 'new' => $new,
                 'news' => $news,
                 'focus' => $focus
@@ -83,9 +84,13 @@ class HomeController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+//        $permission = Role::findOrFail('3')->permission()->pluck('permission_id');
+//        $user->permissions()->attach($permission);
+        $user->roles()->attach('3');
         event(new Registered($user));
         Auth::login($user);
-        return Redirect::to('home');
+        return redirect()->back();
     }
     public function create(LoginRequest $request)
     {
@@ -93,10 +98,10 @@ class HomeController extends Controller
         $request->session()->regenerate();
         if($request->session()->regenerate()){
             session()->flash('message','Đăng nhập thành công');
-            return Redirect::to('home');
+            return redirect()->back();
         }else{
             session()->flash('message','Đăng nhập thất bại');
-            return Redirect::to('home');
+            return redirect()->back();
         }
     }
     public function logout(Request $request)
@@ -104,14 +109,18 @@ class HomeController extends Controller
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->intended('home');
+        return redirect()->back();
     }
     public function sendMail(Request $request)
     {
-        $data = $request->all();
-        $email = $data['email'];
-        $user = User::where('email',$email)->get();
-        Notification::send($user, new InvoicePaid());
-        return redirect()->intended('home');
+         Password::sendResetLink(
+            $request->only('email')
+        );
+
+//        $data = $request->all();
+//        $email = $data['email'];
+//        $user = User::where('email',$email)->get();
+//        Notification::send($user, new InvoicePaid());
+        return redirect()->back();
     }
 }

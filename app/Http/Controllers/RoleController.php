@@ -35,7 +35,7 @@ class RoleController extends Controller
     {
         $this->authorize('role');
         $permissions = ModelsPermission::all();
-        $role = Role::where('id', $id)->get();
+        $role = Role::where('id', $id)->first();
         return view('admin.role.edit_role', ['role' => $role], ['permissions' => $permissions]);
     }
     public function update(Request $request, $id)

@@ -17,22 +17,26 @@ use Illuminate\Support\Facades\Redirect;
 class PostController extends Controller
 {
     protected $service;
+
     public function __construct(HomeService $service)
     {
         $this->service = $service;
     }
+
     public function addPost()
     {
         $this->authorize('create-post');
-        $category = Category::all();
-        return view('admin.post.add_post', ['category' => $category]);
+        $categories = Category::all();
+        return view('admin.post.add_post', ['categories' => $categories]);
     }
+
     public function index()
     {
         $this->authorize('view-post');
         $posts = Post::whereHas('user')->whereHas('category')->get();
         return view('admin.post.list_post', ['posts' => $posts]);
     }
+
     public function insert(PostRequest $request)
     {
         $this->authorize('create-post');
@@ -51,23 +55,24 @@ class PostController extends Controller
         }
         return Redirect::to('post/list-post');
     }
+
     public function edit($id)
     {
+        $post = Post::FindOrFail( $id)->first();
+            $this->authorize('update-post', $post);
+            $categories = Category::all();
+            return view('admin.post.edit_post', [
+                'post' => $post,
+                'categories' => $categories
+            ]);
 
-        $posts = Post::where('id', $id)->first();
-        $this->authorize('update-post',$posts);
-        $categories = Category::all();
-        return view('admin.post.edit_post', [
-            'post' => $posts,
-            'categories' => $categories
-        ]);
     }
+
     public function update(UpdatePostRequest $request, $id)
     {
-
         $data = $request->all();
-        $post = Post::find($id)->fill($data);
-        $this->authorize('update-post',$post);
+        $post = Post::FindOrFail($id)->fill($data);
+        $this->authorize('update-post', $post);
         if ($request->hasFile('image')) {
             $uploadPath = 'posts';
             $file = $request->file('image');
@@ -78,25 +83,22 @@ class PostController extends Controller
             $data['image'] = $filename;
         }
         $post->update($data);
-
         return Redirect::to('post/list-post');
     }
+
     public function delete(Request $request)
     {
-
-        $post = Post::find($request->id);
-        $this->authorize('delete-post',$post);
+        $post = Post::FindOrFail($request->id);
+        $this->authorize('delete-post', $post);
         $post->delete();
         return Redirect::to('post/list-post');
     }
-
     public function isDeleted()
     {
         $this->authorize('restore-post');
         $posts = Post::onlyTrashed()->get();
         return view('admin/post/deleted_post', ['posts' => $posts]);
     }
-
     public function rollbackPost($id)
     {
         $this->authorize('restore-post');
@@ -107,14 +109,11 @@ class PostController extends Controller
     //home page
     public function postDetail($id)
     {
-        $posts = Post::where('id', $id)->get();
+        $post = Post::where('id', $id)->first();
         $categories = Category::where('status', 2)->get();
-        foreach ($posts as $post) {
-            $category_id = $post->category_id;
-        }
-        $post_id = Category::find($category_id)->posts->pluck('id');
-        $postCategory = Post::orderBy('id', 'DESC')
-            ->whereIn('id', $post_id)->take(9)->get();
+        $post_category = $post->category()->first();
+        $postCategory = $post_category->posts()->take(9)->get();
+//        $postCategory =
         //home page hot
         $hot = $this->service->hot();
         $hots = $this->service->hots();
@@ -127,9 +126,9 @@ class PostController extends Controller
         $comments = Comment::where('post_id', $id)->get();
         return view(
             'user.post_detail',
-            ['categories' => $categories],
             [
-                'posts' => $posts,
+                'categories' => $categories,
+                'post' => $post,
                 'hot' => $hot,
                 'hots' => $hots,
                 'focus' => $focus,

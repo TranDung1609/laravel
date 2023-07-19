@@ -12,21 +12,25 @@ use Illuminate\Support\Facades\Redirect;
 class CategoryController extends Controller
 {
     protected $service;
+
     public function __construct(HomeService $service)
     {
         $this->service = $service;
     }
+
     public function addCategory()
     {
         $this->authorize('category');
         return view('admin.category.add_category');
     }
+
     public function index()
     {
         $this->authorize('category');
-        $category = Category::all();
-        return view('admin.Category.list_category', ['cate' => $category]);
+        $categories = Category::all();
+        return view('admin.Category.list_category', ['categories' => $categories]);
     }
+
     public function insert(CategoryRequest $request)
     {
         $this->authorize('category');
@@ -34,34 +38,37 @@ class CategoryController extends Controller
         Category::create($data);
         return Redirect::to('category/list-category');
     }
+
     public function edit($id)
     {
         $this->authorize('category');
-        $categories = Category::where('id', $id)->get();
-        return view('admin.category.edit_category', ['categories' => $categories]);
+        $category = Category::findOrFail($id)->first();
+        return view('admin.category.edit_category', ['category' => $category]);
     }
+
     public function update(CategoryRequest $request, $id)
     {
         $this->authorize('category');
         $data = $request->all();
         $category = Category::find($id)->fill($data);
         $category->update($data);
-
         return Redirect::to('category/list-category');
     }
+
     public function delete($id)
     {
         $this->authorize('category');
         Category::find($id)->delete();
-
         return Redirect::to('category/list-category');
     }
+
     public function isDeleted()
     {
         $this->authorize('category');
-        $category = Category::onlyTrashed()->get();
-        return view('admin/category/deleted_category', ['cate' => $category]);
+        $categories = Category::onlyTrashed()->get();
+        return view('admin/category/deleted_category', ['categories' => $categories]);
     }
+
     public function rollbackCate($id)
     {
         $this->authorize('category');

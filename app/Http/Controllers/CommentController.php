@@ -14,10 +14,9 @@ class CommentController extends Controller
     public function sendComment(CommentRequest $request){
         $this->authorize('create-comment');
         $data = $request->all();
-        User::find(Auth::user()->id);
+        User::findOrFail(Auth::user()->id);
         $data['user_id'] = $request->user()->id;
         Comment::create($data);
-//        $id = $data['post_id'];
         return redirect()->back();
     }
     public function delete(Request $request)

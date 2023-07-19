@@ -56,8 +56,8 @@ class HomeController extends Controller
         $news = $this->service->newsPost();
         return view(
             'user.index',
-            ['categories' => $categories],
             [
+                'categories' => $categories,
                 'world' => $world,
                 'titleWorld' => $titleWorld,
                 'worlds' => $worlds,
@@ -97,11 +97,15 @@ class HomeController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
         if($request->session()->regenerate()){
-            session()->flash('message','Đăng nhập thành công');
-            return redirect()->back();
+            return back()->with([
+                'message' => 'Đăng nhập thành công',
+                'type' => 'success'
+            ]);
         }else{
-            session()->flash('message','Đăng nhập thất bại');
-            return redirect()->back();
+            return back()->with([
+                'message'=> 'Đăng nhập thất bại',
+                'type' => 'danger'
+            ]);
         }
     }
     public function logout(Request $request)
@@ -116,11 +120,6 @@ class HomeController extends Controller
          Password::sendResetLink(
             $request->only('email')
         );
-
-//        $data = $request->all();
-//        $email = $data['email'];
-//        $user = User::where('email',$email)->get();
-//        Notification::send($user, new InvoicePaid());
         return redirect()->back();
     }
 }

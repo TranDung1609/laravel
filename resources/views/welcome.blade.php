@@ -39,13 +39,13 @@
                         </form>
                         <?php
                         if(!isset(auth()->user()->name)){
-                            
+
                          ?>
                         <button style="margin-left: 10px;" class="btn btn-outline-dark open-modal-btn"
                             data-bs-toggle="modal" data-bs-target="#login">Login</button>
-                        <?php 
+                        <?php
                         }else{
-                          
+
                         ?>
                         <form action="{{ route('logout.user') }}" method="POST">
                             @csrf
@@ -53,9 +53,9 @@
                                 class="btn btn-outline-dark open-modal-btn">Logout</button>
                         </form>
                             <span style="margin-left: 10px;" class="fw-semibold d-block">{{ auth()->user()->name }}</span>
-                        <?php 
-                        } 
-                    
+                        <?php
+                        }
+
                         ?>
 
                         {{-- <div class="flex-grow-1">
@@ -238,12 +238,12 @@
             <?php
             //  var_dump(auth()->user());
              ?>
-             @if(session()->has('message'))
-             <div class="alert alert-success">
-                {{session()->get('message')}}
+            @if(session('message'))
+             <div class="alert alert-{{session('type')}}">
+                {{session('message')}}
              </div>
              @endif
-             
+
             @yield('content')
 
         </div>
@@ -301,7 +301,6 @@
             </div>
         </div>
     </div>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">

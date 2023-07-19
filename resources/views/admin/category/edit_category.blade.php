@@ -9,24 +9,22 @@
         <div class="col-xxl">
             <div class="card mb-4">
                 <div class="card-body">
-                    <?php
-                    foreach ($categories as $cate) {
-                    ?>
-                        <form role="form" action="{{ route('category.update', $cate->id) }}" method="POST">
+
+                        <form role="form" action="{{ route('category.update', $category->id) }}" method="POST">
                             @csrf
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="basic-default-name">Name</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" value="{{$cate->name}}" name="name" id="basic-default-name" placeholder="Tên" />
+                                    <input type="text" class="form-control" value="{{$category->name}}" name="name" id="basic-default-name" placeholder="Tên" />
                                 </div>
                             </div>
-                            
+
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="basic-default-message">Status</label>
                                 <div class="col-sm-10">
                                     <select value="" name="status" class="form-control input-sm m-bot15">
-                                        <option  {{$cate->status == 1 ? 'selected' : ''}}  value="1">Ẩn</option>
-                                        <option  {{$cate->status == 2 ? 'selected' : ''}}   value="2">Hiển thị</option>
+                                        <option  {{$category->status == 1 ? 'selected' : ''}}  value="1">Ẩn</option>
+                                        <option  {{$category->status == 2 ? 'selected' : ''}}   value="2">Hiển thị</option>
                                     </select>
                                 </div>
                             </div>
@@ -37,9 +35,7 @@
                             </div>
 
                         </form>
-                    <?php
-                    }
-                    ?>
+
                 </div>
             </div>
         </div>

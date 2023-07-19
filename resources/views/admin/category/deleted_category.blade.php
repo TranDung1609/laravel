@@ -18,15 +18,15 @@
                 <tbody class="table-border-bottom-0">
                     <?php
                     $i=1;
-                    foreach($cate as $category){
+                    foreach($categories as $item){
                     ?>
                             <tr>
                                 <td>{{$i++ }}</td>
-                                <td>{{$category->name}} </td>
+                                <td>{{$item->name}} </td>
                                 <td>
                                     <div>
                                         <a onclick="return confirm('Bạn có muốn rollback category này không?')" class="btn btn-sm btn-danger"
-                                        href="{{ route('category.rollback', $category->id) }}">
+                                        href="{{ route('category.rollback', $item->id) }}">
                                             <i class="bx bx-trash me-1"></i> Rollback</a>
                                     </div>
                             </tr>

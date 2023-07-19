@@ -7,12 +7,9 @@
                     <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('home.index') }}">TRANG
                             CHỦ</a>
                     </li>
-                    @foreach ($posts as $post)
                         <li class="breadcrumb-item active" aria-current="page">
                             {{ $post->category->name }}
                         </li>
-                    @endforeach
-
                 </ol>
             </nav>
             <hr>
@@ -49,7 +46,7 @@
                 </div>
 
                 <div class="col-sm-9">
-                    @foreach ($posts as $post)
+
                         <h2>{{ $post->title }}</h2>
                         <div class="time_comment" style="text-align: right;">
                             <span>{{ $post->updated_at }}</span>
@@ -62,7 +59,7 @@
                             <strong>Tác giả:</strong>
                             {{ $post->user->name }}
                         </div>
-                    @endforeach
+
                     <?php var_dump($post->id); ?>
                     <hr>
 

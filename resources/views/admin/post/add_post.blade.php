@@ -47,8 +47,8 @@
                                 <div class="col-sm-10">
                                     <select name="category_id" class="form-control ">
 
-                                        @foreach ($category as $cate)
-                                            <option value="{{ $cate->id }}">{{ $cate->name }}</option>
+                                        @foreach ($categories as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('category_id')

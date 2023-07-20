@@ -32,6 +32,7 @@ Route::prefix('home')->group(function () {
     Route::post('register-user', [HomeController::class, 'register'])->name('register.user');
     Route::post('login-user', [HomeController::class, 'create'])->name('login.user');
     Route::post('logout-user', [HomeController::class, 'logout'])->name('logout.user');
+    Route::post('load-comment', [CommentController::class, 'loadComment'])->name('load.comment');
     Route::post('send-comment', [CommentController::class, 'sendComment'])->name('send.comment');
     Route::get('send-mail',[HomeController::class,'sendMail'])->name('send.mail');
     Route::get('delete-comment/{id}', [CommentController::class, 'delete'])->name('comment.delete');

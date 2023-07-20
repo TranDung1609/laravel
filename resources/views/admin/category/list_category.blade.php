@@ -2,7 +2,7 @@
 @section('admin_content')
 <div class="main-content">
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"></span> List Category</h4>
-
+    <x-auth-session-status class="mb-4" :status="session('message')" />
     <!-- Basic Bootstrap Table -->
     <div class="card">
         <h5 class="card-header">Table Category</h5>

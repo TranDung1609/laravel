@@ -2,11 +2,11 @@
 @section('admin_content')
 <div class="main-content">
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Form/</span>List Post</h4>
-
+    <x-auth-session-status class="mb-4" :status="session('message')" />
     <!-- Basic Bootstrap Table -->
     <div class="card">
         <h5 class="card-header">Table Post</h5>
-        <div class="table-responsive text-nowrap">
+        <div class="">
             <table id="table_id" class="table">
                 <thead>
                     <tr>
@@ -26,7 +26,7 @@
 
                         <tr>
                             <td>{{$i++ }}</td>
-                            <td style="width: 30%">{{$item->title}}</td>
+                            <td style="width: 40%">{{$item->title}}</td>
                             <td>
                                 {{$item->category->name}}
                             </td>

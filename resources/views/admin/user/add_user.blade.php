@@ -6,14 +6,14 @@
         <div class="row">
             <!-- Basic Layout -->
             <div class="col-xxl">
-                <div class="card mb-4"> 
+                <div class="card mb-4">
                     <div class="card-body">
                         <form role="form" action="{{ route('user.save') }}" method="POST">
                             @csrf
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="basic-default-name">Name</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="name" name="name"
+                                    <input type="text" class="form-control" id="name" name="name" value="{{old('name')}}"
                                         placeholder="Enter your name" autofocus />
                                     @error('name')
                                         <p class="text-danger">{{ $message }}</p>
@@ -42,21 +42,8 @@
                                     @enderror
                                 </div>
                             </div>
-                            {{-- <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-default-desc">Role</label>
-                                <div class="col-sm-10">
-                                    <select name="role_id[]" lass="js-example-basic-multiple form-control"
-                                    multiple="multiple">
 
-                                        @foreach ($roles as $role)
-                                            <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('category_id')
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div> --}}
+
 
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="basic-default-desc">Role</label>
@@ -67,7 +54,9 @@
                                             <option  value="{{ $role->id }}">{{ $role->name }}</option>
                                         @endforeach
                                     </select>
-                                   
+                                    @error('role_id')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
                                 </div>
                             </div>
                             <div class="row justify-content-end">

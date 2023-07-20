@@ -15,4 +15,5 @@ class Permission
     const PERMISSION_DELETE_COMMENT = "delete_comment";
     const PERMISSION_CREATE_COMMENT = "create_comment";
     const PERMISSION_MANAGEMENT_ROLE = "role_management";
+    const PERMISSION_USER_ROLE = "3";
 }

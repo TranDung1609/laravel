@@ -53,19 +53,18 @@ class PostController extends Controller
             $data['image'] = $filename;
             Post::create($data);
         }
-        return Redirect::to('post/list-post');
+        return Redirect::to('post/list-post')->with('message', 'Thêm Post thành công');
     }
 
     public function edit($id)
     {
-        $post = Post::FindOrFail( $id)->first();
-            $this->authorize('update-post', $post);
-            $categories = Category::all();
-            return view('admin.post.edit_post', [
-                'post' => $post,
-                'categories' => $categories
-            ]);
-
+        $post = Post::findOrFail($id);
+        $this->authorize('update-post', $post);
+        $categories = Category::all();
+        return view('admin.post.edit_post', [
+            'post' => $post,
+            'categories' => $categories
+        ]);
     }
 
     public function update(UpdatePostRequest $request, $id)
@@ -83,7 +82,7 @@ class PostController extends Controller
             $data['image'] = $filename;
         }
         $post->update($data);
-        return Redirect::to('post/list-post');
+        return Redirect::to('post/list-post')->with('message', 'Update Post thành công');
     }
 
     public function delete(Request $request)
@@ -91,52 +90,57 @@ class PostController extends Controller
         $post = Post::FindOrFail($request->id);
         $this->authorize('delete-post', $post);
         $post->delete();
-        return Redirect::to('post/list-post');
+        return Redirect::to('post/list-post')->with('message', 'Delete Post thành công');
     }
+
     public function isDeleted()
     {
         $this->authorize('restore-post');
         $posts = Post::onlyTrashed()->get();
         return view('admin/post/deleted_post', ['posts' => $posts]);
     }
+
     public function rollbackPost($id)
     {
         $this->authorize('restore-post');
         Post::withTrashed()->where('id', $id)->restore();
-        return Redirect::to('post/list-post');
+        return Redirect::to('post/list-post')->with('message', 'Rollback Post thành công');
     }
 
     //home page
     public function postDetail($id)
     {
-        $post = Post::where('id', $id)->first();
+        $post = Post::findOrFail($id);
         $categories = Category::where('status', 2)->get();
         $post_category = $post->category()->first();
-        $postCategory = $post_category->posts()->take(9)->get();
-//        $postCategory =
-        //home page hot
-        $hot = $this->service->hot();
-        $hots = $this->service->hots();
-        //home page tieu diem
-        $focus = $this->service->focus();
-        //home page new
-        $new = $this->service->newPost();
-        $news = $this->service->newsPost();
-        //comment
-        $comments = Comment::where('post_id', $id)->get();
-        return view(
-            'user.post_detail',
-            [
-                'categories' => $categories,
-                'post' => $post,
-                'hot' => $hot,
-                'hots' => $hots,
-                'focus' => $focus,
-                'new' => $new,
-                'news' => $news,
-                'postCategory' => $postCategory,
-                'comments' => $comments,
-            ]
-        );
+        if ($post_category) {
+            $postCategory = $post_category->posts()->take(9)->get();
+            $hot = $this->service->hot();
+            $hots = $this->service->hots();
+            //home page tieu diem
+            $focus = $this->service->focus();
+            //home page new
+            $new = $this->service->newPost();
+            $news = $this->service->newsPost();
+            //comment
+            $comments = Comment::where('post_id', $id)->get();
+
+            return view(
+                'user.post_detail',
+                [
+                    'categories' => $categories,
+                    'post' => $post,
+                    'hot' => $hot,
+                    'hots' => $hots,
+                    'focus' => $focus,
+                    'new' => $new,
+                    'news' => $news,
+                    'postCategory' => $postCategory,
+                    'comments' => $comments,
+                ]
+            );
+        }else{
+            return Redirect::to('home');
+        }
     }
 }

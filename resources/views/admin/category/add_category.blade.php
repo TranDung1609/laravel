@@ -12,11 +12,11 @@
                 <div class="card-body">
                     <form action="{{route('category.save')}}" method="POST">
                         @csrf
-                        <div class="card-body">      
+                        <div class="card-body">
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="basic-default-name">Name</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="name" id="name" placeholder="Tên" />
+                                    <input type="text" class="form-control" name="name" value="{{old('name')}}" id="name" placeholder="Tên" />
                                     @error('name')
                                         <p class="text-danger">{{$message}}</p>
                                         @enderror

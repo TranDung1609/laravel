@@ -6,24 +6,19 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('home.index') }}">TRANG CHỦ</a>
                     </li>
-                    @foreach ($category as $category)
                         <li class="breadcrumb-item active" aria-current="page">{{ $category->name }}</li>
-                    @endforeach
-
                 </ol>
             </nav>
             <hr>
             <div class="row">
                 <div class="col-sm-3">
                     <h3>TIN NÓNG</h3>
-                    @foreach ($hot as $item)
-                        <a class="nav-link active" href="{{ route('post.show', $item->id) }}">
-                            <img src="{{ asset('/posts/' . "$item->image") }}" width="100%" height="100px" alt="">
+                        <a class="nav-link active" href="{{ route('post.show', $hot->id) }}">
+                            <img src="{{ asset('/posts/' . "$hot->image") }}" width="100%" height="100px" alt="">
                             <h6>
-                                {{ $item->title }}
+                                {{ $hot->title }}
                             </h6>
                         </a>
-                    @endforeach
                     @foreach ($hots as $item)
                         <hr style="margin-top: 0px">
                         <h6>
@@ -64,14 +59,12 @@
         <div class="col-sm-3">
             <hr style="margin-top: 30px;">
             <h3>TIN MỚI NHẤT</h3>
-            @foreach ($new as $item)
-                <a class="nav-link active" href="{{ route('post.show', $item->id) }}">
-                    <img src="{{ asset('/posts/' . "$item->image") }}" width="100%" alt="">
+                <a class="nav-link active" href="{{ route('post.show', $new->id) }}">
+                    <img src="{{ asset('/posts/' . "$new->image") }}" width="100%" alt="">
                     <h6>
-                        {{ $item->title }}
+                        {{ $new->title }}
                     </h6>
                 </a>
-            @endforeach
             <div class="row">
                 @foreach ($news as $item)
                     <div class="col-sm-6 ">

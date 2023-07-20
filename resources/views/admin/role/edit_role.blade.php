@@ -30,7 +30,7 @@
                                                     value="{{ $permission->id }}">{{ $permission->code }}</option>
                                             @endforeach
                                         </select>
-
+                                        
                                     </div>
                                 </div>
                                 <div class="row justify-content-end">

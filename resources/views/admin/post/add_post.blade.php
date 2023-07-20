@@ -14,7 +14,7 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="basic-default-name">Tiêu đề</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="title" id="basic-default-title"
+                                    <input type="text" class="form-control" name="title" value="{{old('title')}}" id="basic-default-title"
                                         placeholder="Tên" />
                                     @error('title')
                                         <p class="text-danger">{{ $message }}</p>
@@ -36,7 +36,7 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="basic-default-desc">Nội dung</label>
                                 <div class="col-sm-10">
-                                    <textarea name="content" id="editor" class="form-control" rows="5" placeholder="Body"></textarea>
+                                    <textarea name="content" id="editor" class="form-control" rows="5" placeholder="Body">{{old('content')}}</textarea>
                                     @error('content')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror

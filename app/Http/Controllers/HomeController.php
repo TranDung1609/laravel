@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Permission;
+use App\Enums\Role;
 use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\UserRequest;
@@ -17,11 +19,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
+use Illuminate\Validation\ValidationException;
 
 session_start();
+
 class HomeController extends Controller
 {
     protected $service;
+
     public function __construct(HomeService $service)
     {
         $this->service = $service;
@@ -32,11 +37,11 @@ class HomeController extends Controller
         $categories = Category::where('status', 2)->get();
         //home page world
         $world = $this->service->world();
-        $titleWorld = $this->service->titleWorld();
+        $titlesWorld = $this->service->titlesWorld();
         $worlds = $this->service->worlds();
         //home page VN
         $vietnam = $this->service->vietnam();
-        $titleVietnam = $this->service->titleVietnam();
+        $titlesVietnam = $this->service->titlesVietnam();
         $vietnams = $this->service->vietnams();
         //home page oto - xe may
         $car = $this->service->car();
@@ -59,10 +64,10 @@ class HomeController extends Controller
             [
                 'categories' => $categories,
                 'world' => $world,
-                'titleWorld' => $titleWorld,
+                'titlesWorld' => $titlesWorld,
                 'worlds' => $worlds,
                 'vietnam' => $vietnam,
-                'titleVietnam' => $titleVietnam,
+                'titlesVietnam' => $titlesVietnam,
                 'vietnams' => $vietnams,
                 'car' => $car,
                 'cars' => $cars,
@@ -77,6 +82,7 @@ class HomeController extends Controller
             ]
         );
     }
+
     public function register(UserRequest $request)
     {
         $user = User::create([
@@ -84,30 +90,24 @@ class HomeController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-
-//        $permission = Role::findOrFail('3')->permission()->pluck('permission_id');
-//        $user->permissions()->attach($permission);
-        $user->roles()->attach('3');
+        $user->roles()->attach(Role::USER);
         event(new Registered($user));
         Auth::login($user);
-        return redirect()->back();
+        return back()->with([
+            'message' => 'Đăng ký thành công',
+            'type' => 'success'
+        ]);
     }
     public function create(LoginRequest $request)
     {
         $request->authenticate();
         $request->session()->regenerate();
-        if($request->session()->regenerate()){
-            return back()->with([
-                'message' => 'Đăng nhập thành công',
-                'type' => 'success'
-            ]);
-        }else{
-            return back()->with([
-                'message'=> 'Đăng nhập thất bại',
-                'type' => 'danger'
-            ]);
-        }
+        return back()->with([
+            'message' => 'Đăng nhập thành công',
+            'type' => 'success'
+        ]);
     }
+
     public function logout(Request $request)
     {
         Auth::guard('web')->logout();
@@ -115,9 +115,10 @@ class HomeController extends Controller
         $request->session()->regenerateToken();
         return redirect()->back();
     }
+
     public function sendMail(Request $request)
     {
-         Password::sendResetLink(
+        Password::sendResetLink(
             $request->only('email')
         );
         return redirect()->back();

@@ -36,13 +36,13 @@ class CategoryController extends Controller
         $this->authorize('category');
         $data = $request->all();
         Category::create($data);
-        return Redirect::to('category/list-category');
+        return Redirect::to('category/list-category')->with('message','Thêm Category thành công');
     }
 
     public function edit($id)
     {
         $this->authorize('category');
-        $category = Category::findOrFail($id)->first();
+        $category = Category::findOrFail($id);
         return view('admin.category.edit_category', ['category' => $category]);
     }
 
@@ -52,15 +52,15 @@ class CategoryController extends Controller
         $data = $request->all();
         $category = Category::find($id)->fill($data);
         $category->update($data);
-        return Redirect::to('category/list-category');
+        return Redirect::to('category/list-category')->with('message','Sửa Category thành công');
     }
 
     public function delete($id)
     {
         $this->authorize('category');
         Category::find($id)->delete();
-        return Redirect::to('category/list-category');
-    }
+        return Redirect::to('category/list-category')->with('message','Xoá Category thành công');
+    } 
 
     public function isDeleted()
     {
@@ -73,7 +73,7 @@ class CategoryController extends Controller
     {
         $this->authorize('category');
         Category::withTrashed()->where('id', $id)->restore();
-        return Redirect::to('category/list-category');
+        return Redirect::to('category/list-category')->with('message','Khôi phục Category thành công');
     }
 
     //home page
@@ -81,11 +81,8 @@ class CategoryController extends Controller
     public function showCategory($id)
     {
         $categories = Category::where('status', 2)->get();
-        $category = Category::where('id', $id)->get();
-        foreach ($category as $cate) {
-            $name = $cate->name;
-        }
-        if (isset($name)) {
+        $category = Category::findOrFail($id);
+        
             $postCategory = $this->service->postCategory($id);
             //home page hot
             $hot = $this->service->hot();
@@ -108,8 +105,6 @@ class CategoryController extends Controller
                     'news' => $news,
                 ]
             );
-        } else {
-            return Redirect::to('home');
-        }
+        
     }
 }

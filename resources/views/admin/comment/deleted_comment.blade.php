@@ -2,11 +2,11 @@
 @section('admin_content')
     <div class="main-content">
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"></span> List Comment</h4>
-
+        <x-auth-session-status class="mb-4" :status="session('message')" />
         <!-- Basic Bootstrap Table -->
         <div class="card">
             <h5 class="card-header">Table Comment</h5>
-            <div class="table-responsive text-nowrap">
+            <div class="">
                 <table id="table_id" class="table">
                     <thead>
                     <tr>
@@ -25,8 +25,8 @@
                     <tr>
                         <td>{{$i++ }}</td>
                         <td>{{$comment->user->name}} </td>
-                        <td>{{$comment->post->title}}</td>
-                        <td>{{$comment->comment}}</td>
+                        <td style="width: 30%" >{{$comment->post->title}}</td>
+                        <td style="width: 30%">{{$comment->comment}}</td>
                         <td>
                             <div>
                                 <a onclick="return confirm('Bạn có muốn rollback category này không?')" class="btn btn-sm btn-danger"

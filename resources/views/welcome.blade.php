@@ -313,45 +313,8 @@
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
 </script>
 <script src="{{ asset('../login/app.js') }}"></script>
-<script type="text/javascript">
-    $(document).ready(function(){
-        load_comment();
-        function load_comment(){
-            var id = $('.post_id').val();
-            var _token = $('input[name="_token"]').val();
 
-            $.ajax({
-                url : '{{route('load.comment')}}',
-                method: 'POST',
-                data:{_token:_token, post_id:id},
-                // dataType:"JSON",
-                success:function(data){
-                    $('#comment_show').html(data);
-                }
-            });
 
-        }
-        $('.send-comment').click(function(){
-            var post_id = $('.post_id').val();
-            var user_id = $('.user_id').val();
-            var comment = $('.comment').val();
-            var _token = $('input[name="_token"]').val();
-            $.ajax({
-                url : "{{route('send.comment')}}",
-                method: "POST",
-                data:{_token:_token, post_id:post_id,user_id:user_id,comment:comment},
-                // dataType:"JSON",
-                success:function(data){
-                    $('#notify_comment').html('<p class="text text-success">Thêm bình luận thành công</p>');
-                    // load_comment();
-                    // $('#notify_comment').fadeOut(5000);
-                    // $('.comment_name').val('');
-                    // $('.comment_content').val('');
-                }
-            });
-        });
-    });
-</script>
 </body>
 
 </html>

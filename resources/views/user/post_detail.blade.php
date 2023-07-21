@@ -62,7 +62,7 @@
                         {{ $post->user->name }}
                     </div>
 
-                    <?php var_dump($post->id); ?>
+
                     <hr>
 
                     <h4>Ý KIẾN CỦA BẠN</h4>
@@ -82,7 +82,7 @@
                         </div>
                         <?php }else{ ?>
                         <div class="comment">
-                            <form action="{{ route('send.comment') }}" method="POST">
+                            <form action="{{route('send.comment')}}" method="POST">
                                 @csrf
                                 <!-- <textarea name="comment" id="" cols="100%" rows="3" placeholder="Ý kiến của bạn"></textarea> -->
                                 <input type="hidden" name="post_id" value="{{ $post->id }}">
@@ -100,7 +100,8 @@
                     <h4>TẤT CẢ Ý KIẾN</h4>
                     <div class="content-comment">
                         @foreach ($comments as $item)
-                            <p>
+                            <div class="comment">
+                                <p>
                                 <span class="txt-name">
                                     <a class="nav-link nickname">
                                         <b>{{ $item->user->name }} : </b> {{ $item->comment }}
@@ -112,9 +113,42 @@
                                             <i class="bx bx-trash me-1"></i> Delete</a>
                                     @endcan
                                 </span>
-                            </p>
+                                </p>
+                            </div>
                         @endforeach
                     </div>
+                    <hr>
+                    <hr>
+                    {{--                     Your comment form --}}
+                    <form id="comment-form">
+                        @csrf
+                        <input type="hidden" name="post_id" value="{{ $post->id }}">
+                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                        <input type="hidden" name="user_name" value="{{ auth()->user()->name}}">
+                        <input class="form-control" name="comment" placeholder="Ý kiến của bạn">
+                        <br>
+                        <button class="btn btn-outline-primary" type="submit">Submit Comment</button>
+                    </form>
+
+                    {{--                     Display existing comments --}}
+                    <div id="comments-container">
+                        @foreach($comments as $comment)
+                            <div class="comment">
+                                    <span class="txt-name">
+                                        <a class="nav-link nickname">
+                                            <b>{{ $comment->user->name }} : </b> {{ $comment->comment }}
+                                        </a>
+                                        @can('delete-comment',$item)
+                                            <a onclick="return confirm('Bạn có muốn xoá category này không?')"
+                                               class="btn btn-sm btn-danger"
+                                               href="{{ route('comment.delete', $comment->id) }}">
+                                            <i class="bx bx-trash me-1"></i> Delete</a>
+                                        @endcan
+                                    </span>
+                            </div>
+                        @endforeach
+                    </div>
+
                     <hr>
                     <div class="row">
                         <h2>BÀI VIẾT CÙNG CHUYÊN MỤC</h2>
@@ -125,7 +159,6 @@
                                         <img src="{{ asset('/posts/' . "$item->image") }}" width="100%" height="100px"
                                              alt="">
                                         <h6>{{ $item->title }}</h6>
-
                                     </a>
                                 </div>
                             @endforeach
@@ -160,4 +193,29 @@
             @endif
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#comment-form').submit(function (e) {
+                e.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('send.comment') }}',
+                    data: formData,
+                    success: function (data) {
+                        $('#comments-container').append(
+                             '<div class="comment"> ' +
+                            '<b>' + data.comment.user_name + ': </b>' + data.comment.comment +
+                           ' </div>'
+                        );
+                        $('#comment-form')[0].reset();
+                    },
+                    error: function (data) {
+                        alert('Error adding comment.');
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

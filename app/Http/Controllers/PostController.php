@@ -22,7 +22,6 @@ class PostController extends Controller
     {
         $this->service = $service;
     }
-
     public function addPost()
     {
         $this->authorize('create-post');
@@ -106,9 +105,8 @@ class PostController extends Controller
         Post::withTrashed()->where('id', $id)->restore();
         return Redirect::to('post/list-post')->with('message', 'Rollback Post thành công');
     }
-
     //home page
-    public function postDetail($id)
+    public function postDetail(Request $request,$id)
     {
         $post = Post::findOrFail($id);
         $categories = Category::where('status', 2)->get();
@@ -124,7 +122,6 @@ class PostController extends Controller
             $news = $this->service->newsPost();
             //comment
             $comments = Comment::where('post_id', $id)->get();
-
             return view(
                 'user.post_detail',
                 [

@@ -71,6 +71,7 @@ class UserController extends Controller
         $user->posts()->update([
             'user_id' => Author::ADMIN,
         ]);
+        $user->comments()->delete();
         $user->delete();
         return Redirect::to('user/list-user')->with('message', 'Delete User thành công');
     }
@@ -84,7 +85,8 @@ class UserController extends Controller
     public function rollbackUser($id)
     {
         $this->authorize('user');
-        User::withTrashed()->where('id', $id)->restore();
+        $user = User::withTrashed()->where('id', $id);
+        $user->restore();
         return Redirect::to('user/list-user')->with('message', 'Rollback User thành công');
     }
 }

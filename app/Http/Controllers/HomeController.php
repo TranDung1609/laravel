@@ -115,7 +115,6 @@ class HomeController extends Controller
         $request->session()->regenerateToken();
         return redirect()->back();
     }
-
     public function sendMail(Request $request)
     {
         Password::sendResetLink(

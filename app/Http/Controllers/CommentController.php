@@ -51,7 +51,7 @@ class CommentController extends Controller
     public function isDeleted()
     {
         $this->authorize('view-comment');
-        $comments = Comment::onlyTrashed()->get();
+        $comments = Comment::onlyTrashed()->whereHas('user')->whereHas('post')->get();
         return view('admin.comment.deleted_comment', ['comments' => $comments]);
     }
     public function rollbackComment($id)

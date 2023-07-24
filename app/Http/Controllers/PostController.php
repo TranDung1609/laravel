@@ -28,14 +28,12 @@ class PostController extends Controller
         $categories = Category::all();
         return view('admin.post.add_post', ['categories' => $categories]);
     }
-
     public function index()
     {
         $this->authorize('view-post');
         $posts = Post::whereHas('user')->whereHas('category')->get();
         return view('admin.post.list_post', ['posts' => $posts]);
     }
-
     public function insert(PostRequest $request)
     {
         $this->authorize('create-post');
@@ -54,7 +52,6 @@ class PostController extends Controller
         }
         return Redirect::to('post/list-post')->with('message', 'Thêm Post thành công');
     }
-
     public function edit($id)
     {
         $post = Post::findOrFail($id);
@@ -65,7 +62,6 @@ class PostController extends Controller
             'categories' => $categories
         ]);
     }
-
     public function update(UpdatePostRequest $request, $id)
     {
         $data = $request->all();
@@ -83,7 +79,6 @@ class PostController extends Controller
         $post->update($data);
         return Redirect::to('post/list-post')->with('message', 'Update Post thành công');
     }
-
     public function delete(Request $request)
     {
         $post = Post::FindOrFail($request->id);
@@ -91,14 +86,12 @@ class PostController extends Controller
         $post->delete();
         return Redirect::to('post/list-post')->with('message', 'Delete Post thành công');
     }
-
     public function isDeleted()
     {
         $this->authorize('restore-post');
         $posts = Post::onlyTrashed()->get();
         return view('admin/post/deleted_post', ['posts' => $posts]);
     }
-
     public function rollbackPost($id)
     {
         $this->authorize('restore-post');

@@ -119,6 +119,20 @@
                     </div>
                     <hr>
                     <hr>
+                        <?php
+                    if (!isset(auth()->user()->name)){
+                        ?>
+                    <div class="comment">
+                        <!-- <textarea name="comment" id="" cols="100%" rows="3" placeholder="Ý kiến của bạn"></textarea> -->
+                        <input type="hidden" name="post_id" value="{{ $post->id }}">
+                        <input class="form-control" type="comment" placeholder="Ý kiến của bạn">
+                        <br>
+                        <button onclick="return confirm('Vui lòng đăng nhập để bình luận!')"
+                                class="btn btn-outline-primary"
+                                type="submit">Gửi
+                        </button>
+                    </div>
+                    <?php }else{ ?>
                     {{--                     Your comment form --}}
                     <form id="comment-form">
                         @csrf
@@ -130,21 +144,25 @@
                         <button class="btn btn-outline-primary" type="submit">Submit Comment</button>
                     </form>
 
+
+                        <?php } ?>
                     {{--                     Display existing comments --}}
                     <div id="comments-container">
                         @foreach($comments as $comment)
                             <div class="comment">
+                                <p>
                                     <span class="txt-name">
                                         <a class="nav-link nickname">
                                             <b>{{ $comment->user->name }} : </b> {{ $comment->comment }}
                                         </a>
-                                        @can('delete-comment',$item)
+                                        @can('delete-comment',$comment)
                                             <a onclick="return confirm('Bạn có muốn xoá category này không?')"
                                                class="btn btn-sm btn-danger"
                                                href="{{ route('comment.delete', $comment->id) }}">
                                             <i class="bx bx-trash me-1"></i> Delete</a>
                                         @endcan
                                     </span>
+                                </p>
                             </div>
                         @endforeach
                     </div>

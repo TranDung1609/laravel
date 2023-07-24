@@ -49,14 +49,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class, 'user_id', 'id');
     }
-    public function comments()
+        public function comments()
     {
         return $this->hasMany(Comment::class, 'user_id', 'id');
     }
-    // public function permissions(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
-    // {
-    //     return $this->belongsToMany(Permission::class, 'permission_user', 'user_id', 'permission_id');
-    // }
 
     public function roles()
     {
